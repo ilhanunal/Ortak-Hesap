@@ -68,4 +68,4 @@ See the design justification PDF for the reasoning behind each choice.
 
 - Course: MTM4681 Mobile Programming, Yıldız Technical University
 - Milestone: Project Milestone 1 (due 12 November 2026, 23:00)
-- Submission archive: `Team5_MTM4186_MS.zip`
+- Submission archive: `Team5_MTM4681_MS.zip`
