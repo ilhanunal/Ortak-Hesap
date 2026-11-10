@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ortak Hesap – Design Justification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 13mm 14mm 12mm 14mm; }
+  :root{
+    --primary:#0B6B63; --on-primary:#FFFFFF; --primary-container:#B8F0E7; --on-primary-container:#00201C;
+    --tertiary:#9A4521; --tertiary-container:#FFDBCC; --surface:#F5FAF8; --on-surface:#171D1C;
+    --on-surface-variant:#3F4947; --outline:#6F7977; --error:#BA1A1A;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  body{font-family:'Inter','Segoe UI',Arial,sans-serif; font-size:9.3pt; line-height:1.42; color:var(--on-surface); margin:0; font-feature-settings:"tnum" 1;}
+  h1,h2,h3{font-family:'Plus Jakarta Sans','Segoe UI',Arial,sans-serif; margin:0; color:var(--on-primary-container)}
+  header{display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2.5px solid var(--primary); padding-bottom:7px; margin-bottom:9px}
+  h1{font-size:21pt; font-weight:800; letter-spacing:-.4px; line-height:1.05}
+  .sub{font-size:9.5pt; color:var(--on-surface-variant); margin-top:3px}
+  .meta{text-align:right; font-size:8.3pt; color:var(--on-surface-variant); line-height:1.35}
+  .meta b{color:var(--on-surface)}
+  h2{font-size:12pt; font-weight:700; margin:11px 0 4px; display:flex; align-items:center; gap:7px}
+  h2 .n{background:var(--primary); color:#fff; width:18px; height:18px; border-radius:50%; font-size:8.5pt; display:inline-flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif; font-weight:700}
+  p{margin:0 0 5px}
+  ul{margin:2px 0 4px; padding-left:15px}
+  li{margin:0 0 2px}
+  .principles{display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:5px 0 3px}
+  .card{background:var(--primary-container); border-radius:10px; padding:6px 9px; font-size:8.7pt}
+  .card b{display:block; font-family:'Plus Jakarta Sans',sans-serif; font-size:9.4pt; color:var(--on-primary-container)}
+  table{border-collapse:collapse; width:100%; font-size:8.4pt; margin:4px 0 5px}
+  th{background:var(--on-primary-container); color:#fff; text-align:left; padding:3px 6px; font-weight:600}
+  td{padding:3px 6px; border-bottom:1px solid #d5e0dd; vertical-align:middle}
+  .chip{display:inline-block; width:34px; height:15px; border-radius:5px; border:1px solid rgba(0,0,0,.18); vertical-align:middle}
+  .hex{font-family:Consolas,'Courier New',monospace; font-size:8pt}
+  .pass{color:#0B6B63; font-weight:700}
+  .two{display:grid; grid-template-columns:1.12fr 1fr; gap:12px}
+  .specimen{background:var(--surface); border:1px solid #cfdcd8; border-radius:12px; padding:8px 11px}
+  .spec-big{font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:21pt; line-height:1.1; color:var(--on-primary-container)}
+  .amt{font-family:'Inter',sans-serif; font-weight:600; font-variant-numeric:tabular-nums}
+  .owed{color:var(--primary)} .owe{color:var(--tertiary)}
+  .row{display:flex; justify-content:space-between; font-size:9pt; padding:2px 0; border-bottom:1px dashed #cfdcd8}
+  .row:last-child{border:0}
+  .small{font-size:8pt; color:var(--on-surface-variant)}
+  .note{border-left:3px solid var(--tertiary); background:var(--tertiary-container); padding:4px 8px; border-radius:0 8px 8px 0; font-size:8.6pt; margin:5px 0}
+  footer{position:fixed; bottom:0; left:0; right:0; font-size:7.5pt; color:var(--outline); text-align:center}
+  .pb{break-before:page}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Ortak Hesap</h1>
+    <div class="sub">Design justification &middot; Milestone 1 &middot; shared-expense app for students</div>
+  </div>
+  <div class="meta">
+    <b>Team 5</b> &middot; MTM4681 Mobile Programming<br>
+    Hakan İnce &amp; İlhan Ünal<br>
+    Flutter &middot; Material 3
+  </div>
+</header>
+
+<h2><span class="n">1</span>Product, users and design principles</h2>
+<p><b>Ortak Hesap</b> helps students who share a flat, a dorm room or a holiday keep track of who paid for what and who owes whom. Our users are 18&ndash;26 years old, use the phone one-handed (in a shop, a café, on the bus), often in the evening, and are not accountants: they want to log a purchase in a few seconds and see one clear answer, &ldquo;how much do I owe or get back?&rdquo;. Money between friends is also socially sensitive, so the interface must feel calm and fair rather than alarming. This led to three principles:</p>
+<div class="principles">
+  <div class="card"><b>Speed to add</b>Amount first, sensible defaults (paid by me, split equally), one primary action per screen.</div>
+  <div class="card"><b>Clarity of money</b>One headline balance per group, who-owes-whom in plain words, never colour alone.</div>
+  <div class="card"><b>Calm, fair tone</b>Friendly teal and warm terracotta instead of banking blue and alarm red.</div>
+</div>
+
+<h2><span class="n">2</span>Colour palette</h2>
+<p>We built a Material 3 scheme from the seed colour <span class="hex">#0B6B63</span> (deep teal) and tuned two roles by hand. Teal signals trust and money but stays distinct from the blue of most banking apps, and reads as &ldquo;growth&rdquo; for money you are <i>owed</i>. Debts use a warm terracotta (tertiary role) instead of red: red is reserved for errors and destructive actions, so a normal debt does not feel like a warning.</p>
+<table>
+  <tr><th style="width:42px">Swatch</th><th>M3 role</th><th>Hex</th><th>Used for</th><th>Pair checked</th><th>Contrast</th></tr>
+  <tr><td><span class="chip" style="background:#0B6B63"></span></td><td>primary</td><td class="hex">#0B6B63</td><td>FAB, buttons, &ldquo;owed to you&rdquo; amounts</td><td>on surface #F5FAF8</td><td class="pass">6.0 : 1</td></tr>
+  <tr><td><span class="chip" style="background:#B8F0E7"></span></td><td>primaryContainer</td><td class="hex">#B8F0E7</td><td>Selected tab, summary cards</td><td>text #00201C</td><td class="pass">13.6 : 1</td></tr>
+  <tr><td><span class="chip" style="background:#9A4521"></span></td><td>tertiary</td><td class="hex">#9A4521</td><td>&ldquo;you owe&rdquo; amounts, pending settlements</td><td>on surface #F5FAF8</td><td class="pass">6.1 : 1</td></tr>
+  <tr><td><span class="chip" style="background:#FFDBCC"></span></td><td>tertiaryContainer</td><td class="hex">#FFDBCC</td><td>Debt chips, info banners</td><td>text #3A0C00</td><td class="pass">13.2 : 1</td></tr>
+  <tr><td><span class="chip" style="background:#F5FAF8"></span></td><td>surface</td><td class="hex">#F5FAF8</td><td>Screen background</td><td>text #171D1C</td><td class="pass">16.2 : 1</td></tr>
+  <tr><td><span class="chip" style="background:#6F7977"></span></td><td>outline</td><td class="hex">#6F7977</td><td>Input borders, dividers</td><td>UI component (3 : 1)</td><td class="pass">4.3 : 1</td></tr>
+  <tr><td><span class="chip" style="background:#BA1A1A"></span></td><td>error</td><td class="hex">#BA1A1A</td><td>Validation errors, delete</td><td>on surface #F5FAF8</td><td class="pass">6.1 : 1</td></tr>
+  <tr><td><span class="chip" style="background:#0E1514"></span><span class="chip" style="background:#82D5CA; width:14px"></span><span class="chip" style="background:#FFB596; width:14px"></span></td><td>dark theme</td><td class="hex">#0E1514 / #82D5CA / #FFB596</td><td>Surface / primary / tertiary in dark mode</td><td>primary &amp; tertiary on surface</td><td class="pass">10.8 : 1</td></tr>
+</table>
+<div class="note"><b>Colour is never the only signal.</b> Teal and terracotta have almost the same luminance, so a colour-blind user (or a screenshot in greyscale) could confuse them. Every amount therefore also carries a sign (+ / &minus;), an arrow icon and a text label (&ldquo;owes you&rdquo; / &ldquo;you owe&rdquo;).</div>
+
+<h2><span class="n">3</span>Typography</h2>
+<div class="two">
+<div>
+  <p><b>Plus Jakarta Sans</b> (SemiBold/Bold) is used for display, headline and title styles. Its geometric, slightly rounded letterforms feel friendly and modern, which suits a social-money app and gives the group names and balances character. <b>Inter</b> is used for body, labels and every amount: it is designed for small screens, stays legible at 12&nbsp;sp and offers <i>tabular figures</i>, so digits line up in columns of amounts. Both families fully support Turkish characters (&ccedil; &#287; &#305; &#304; &ouml; &#351; &uuml;) and the lira sign, which matters for our users.</p>
+  <p>We follow the Material 3 type scale with sizes in <b>sp</b>, so text grows with the user&rsquo;s system font setting (the layouts are designed to survive 200&nbsp;%). The smallest size is 12&nbsp;sp, used only for captions.</p>
+</div>
+<div class="specimen">
+  <div class="spec-big">Ortak Hesap</div>
+  <div class="small" style="margin:2px 0 5px">Pijamalı hasta yağız şoföre çabucak güvendi.</div>
+  <div class="row"><span>Ayşe owes you</span><span class="amt owed">+ &#8378;120,00</span></div>
+  <div class="row"><span>You owe Mert</span><span class="amt owe">&minus; &#8378;1.250,50</span></div>
+  <div class="row"><span>Groceries &middot; 12 Nov</span><span class="amt">&#8378;86,90</span></div>
+</div>
+</div>
+<p class="small"><b>Scale used:</b> Display Small 36/44 sp (group balance) &middot; Title Large 22/28 (screen titles) &middot; Title/Body Large 16/24 (list rows, input text) &middot; Body Medium/Label Large 14/20 (secondary text, buttons) &middot; Label Small 12/16 (captions, tab labels).</p>
+
+<div class="pb"></div>
+
+<h2 style="margin-top:0"><span class="n">4</span>Layout and navigation</h2>
+<ul>
+  <li><b>Thumb-first, compact layout.</b> We design for a 360&times;800&nbsp;dp phone first. A Material 3 <i>navigation bar</i> with three destinations (Groups, Activity, Profile) sits at the bottom, and the extended <i>FAB &ldquo;Add expense&rdquo;</i> is placed bottom-right, inside the natural thumb zone. The most frequent action is therefore one tap away from any group screen.</li>
+  <li><b>Progressive disclosure.</b> The Add-expense form opens with only amount, title and payer; the split defaults to &ldquo;equally&rdquo; and the custom-split sheet appears only on request.</li>
+  <li><b>Consistent grid and shapes.</b> 8&nbsp;dp grid, 16&nbsp;dp margins, 48&times;48&nbsp;dp minimum touch targets, M3 corner radii (12&nbsp;dp cards and fields, 28&nbsp;dp FAB and sheets), tonal surfaces instead of heavy shadows.</li>
+  <li><b>Plain-language balances.</b> The Balances screen lists the minimal set of payments (&ldquo;Ayşe pays Mert &#8378;120,00&rdquo;), each with one &ldquo;Settle&rdquo; button and a confirmation dialog, because paying back is the goal of the app.</li>
+  <li><b>Helpful states and local formatting.</b> Empty states give one next step, errors appear inline with an icon and text, finished groups show &ldquo;All settled&rdquo;. Amounts follow Turkish conventions (&#8378;1.250,50) and texts stay short for TR/EN.</li>
+</ul>
+
+<h2><span class="n">5</span>Accessibility</h2>
+<table>
+  <tr><th style="width:23%">Area</th><th>Decision</th></tr>
+  <tr><td>Contrast</td><td>All text/background pairs meet WCAG 2.1 AA (&ge; 4.5 : 1; most &ge; 6 : 1) and UI components such as borders meet 3 : 1. The dark theme is checked separately (10.8&ndash;14.3 : 1).</td></tr>
+  <tr><td>Not colour alone</td><td>Debt direction is expressed by sign, arrow icon and wording as well as colour; errors use an icon and message text.</td></tr>
+  <tr><td>Touch targets</td><td>Every interactive element is at least 48&times;48&nbsp;dp with 8&nbsp;dp spacing; list rows are fully tappable.</td></tr>
+  <tr><td>Scalable text</td><td>Sizes in sp, layouts use flexible containers and wrap instead of truncating; at 200 % scale, amount rows stack vertically (planned wireframe variant).</td></tr>
+  <tr><td>Screen readers</td><td>Flutter <span class="hex">Semantics</span> labels read full sentences (&ldquo;Ayşe owes you 120 Turkish lira&rdquo;) rather than icon names; meaningful reading order top to bottom; decorative icons are excluded.</td></tr>
+  <tr><td>Motion</td><td>Transitions are short (200&ndash;300 ms) and respect the system &ldquo;reduce motion&rdquo; setting by falling back to simple fades.</td></tr>
+  <tr><td>Theme</td><td>Light and dark themes are both supported and follow the system setting, which helps in the evening and one-handed outdoor use.</td></tr>
+</table>
+
+<h2><span class="n">6</span>How the design supports the intended users</h2>
+<p>Students open the app in short bursts, so the design favours recognition over reading: one large balance, Material 3 components they already know from Android, and a gentle colour scheme that does not make a debt feel like an accusation. In the prototype, motion is used sparingly and with purpose: the FAB expands into the Add-expense sheet (container transform) so users see where the form comes from, a new expense slides into the list, and the balance counts to its new value after a settlement, confirming that the action worked.</p>
+
+</body>
+</html>
