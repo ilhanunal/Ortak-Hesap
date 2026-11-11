@@ -1,5 +1,6 @@
 # Ortak Hesap
 
+**GitHub repository:** https://github.com/ilhanunal/Ortak-Hesap
 **A shared-expense mobile app for students who live, study or travel together.**
 Log who paid, split it fairly, and always know who owes whom.
 
