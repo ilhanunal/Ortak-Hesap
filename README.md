@@ -37,9 +37,9 @@ How to try the prototype: open the Prototype page, press **Present** (play butto
 |---|---|---|---|
 | 1 | Design justification (PDF, 2 pages) | [docs/01_Design_Justification.pdf](docs/01_Design_Justification.pdf) | Done (Part 1) |
 | 2 | User flow diagram (PDF) | [docs/02_User_Flow.pdf](docs/02_User_Flow.pdf) | Done (Part 1) |
-| 3 | Wireframes (Figma) | see Figma links | Part 2 |
-| 4 | Mockups (Figma) | see Figma links | Part 2 |
-| 5 | Prototype (Figma) | see Figma links | Part 3 |
+| 3 | Wireframes (Figma) | see Figma links, preview: [design/wireframes-overview.png](design/wireframes-overview.png) | Done (Part 2) |
+| 4 | Mockups (Figma) | see Figma links, preview: [design/mockups-overview.png](design/mockups-overview.png) | Done (Part 2) |
+| 5 | Prototype (Figma) | see Figma links (page "Prototype") | Done (Part 2), final check in Part 3 |
 | 6 | Architecture and protocols (PDF) | `docs/03_Architecture_and_Protocols.pdf` | Part 3 |
 
 ## Repository structure
@@ -53,9 +53,12 @@ ortak-hesap/
 │   └── src/                      # editable sources of the PDFs (HTML)
 │       ├── design-justification.html
 │       └── user-flow.html
+└── design/
+    ├── wireframes-overview.png   # preview of the Figma wireframes
+    └── mockups-overview.png      # preview of the Figma mockups
 ```
 
-More folders (`design/` screenshots, architecture PDF) are added in the following parts.
+The architecture and protocols PDF is added in Part 3. The editable design work stays in Figma.  
 
 ## Design at a glance
 
