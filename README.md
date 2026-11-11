@@ -30,17 +30,25 @@ Ortak Hesap is built with **Flutter** and follows **Material 3**. Students creat
 
 How to try the prototype: open the Prototype page, press **Present** (play button) and choose the flow **"Main flow (start at onboarding)"**. Transitions used: push (forward / back), move-in from the bottom (FAB and custom split sheet) and dissolve (tabs and dialogs).
 
-
 ## Deliverables and status
 
 | # | Deliverable | File / link | Status |
 |---|---|---|---|
-| 1 | Design justification (PDF, 2 pages) | [docs/01_Design_Justification.pdf](docs/01_Design_Justification.pdf) | Done (Part 1) |
-| 2 | User flow diagram (PDF) | [docs/02_User_Flow.pdf](docs/02_User_Flow.pdf) | Done (Part 1) |
-| 3 | Wireframes (Figma) | see Figma links, preview: [design/wireframes-overview.png](design/wireframes-overview.png) | Done (Part 2) |
-| 4 | Mockups (Figma) | see Figma links, preview: [design/mockups-overview.png](design/mockups-overview.png) | Done (Part 2) |
-| 5 | Prototype (Figma) | see Figma links (page "Prototype") | Done (Part 2), final check in Part 3 |
-| 6 | Architecture and protocols (PDF) | `docs/03_Architecture_and_Protocols.pdf` | Part 3 |
+| 1 | Design justification (PDF, 2 pages) | [docs/01_Design_Justification.pdf](docs/01_Design_Justification.pdf) | Done |
+| 2 | User flow diagram (PDF) | [docs/02_User_Flow.pdf](docs/02_User_Flow.pdf) | Done |
+| 3 | Wireframes (Figma) | see Figma links, preview: [design/wireframes-overview.png](design/wireframes-overview.png) | Done |
+| 4 | Mockups (Figma) | see Figma links, preview: [design/mockups-overview.png](design/mockups-overview.png) | Done |
+| 5 | Prototype (Figma) | see Figma links (page "Prototype") | Done |
+| 6 | Architecture and protocols (PDF) | [docs/03_Architecture_and_Protocols.pdf](docs/03_Architecture_and_Protocols.pdf) | Done |
+
+## Architecture at a glance
+
+- **Pattern:** MVVM (Model-View-ViewModel) with a Repository layer; `provider` + `ChangeNotifier` for state.
+- **Layers:** View (Flutter widgets) -> ViewModel -> Repository interfaces -> data sources (Firebase Auth, Cloud Firestore, FCM, Storage, camera, share, deep links).
+- **Key protocols and interfaces:** HTTPS/TLS, OAuth 2.0 / OpenID Connect (Google sign-in), Cloud Firestore real-time listeners with offline cache, Firebase Cloud Messaging, Android App Links (invite links), camera/QR scanning, share sheet.
+- **Model layer logic:** integer money in kuruş, fair equal-split rounding, greedy debt simplification (at most n-1 payments).
+
+Details, diagrams and the full protocol table are in [docs/03_Architecture_and_Protocols.pdf](docs/03_Architecture_and_Protocols.pdf).
 
 ## Repository structure
 
@@ -50,15 +58,17 @@ ortak-hesap/
 ├── docs/
 │   ├── 01_Design_Justification.pdf
 │   ├── 02_User_Flow.pdf
+│   ├── 03_Architecture_and_Protocols.pdf
 │   └── src/                      # editable sources of the PDFs (HTML)
 │       ├── design-justification.html
-│       └── user-flow.html
+│       ├── user-flow.html
+│       └── architecture-protocols.html
 └── design/
     ├── wireframes-overview.png   # preview of the Figma wireframes
     └── mockups-overview.png      # preview of the Figma mockups
 ```
 
-The architecture and protocols PDF is added in Part 3. The editable design work stays in Figma.  
+The editable design work stays in Figma (links above).
 
 ## Design at a glance
 
@@ -74,4 +84,4 @@ See the design justification PDF for the reasoning behind each choice.
 
 - Course: MTM4681 Mobile Programming, Yıldız Technical University
 - Milestone: Project Milestone 1 (due 12 November 2026, 23:00)
-- Submission archive: `Team5_MTM4681_MS.zip`
+- Submission: archive uploaded to online.yildiz.edu.tr (Team 5)
