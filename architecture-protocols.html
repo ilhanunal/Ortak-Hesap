@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ortak Hesap - Architecture and Protocols</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 12mm 13mm 11mm 13mm; }
+  :root{ --pri:#0B6B63; --pc:#B8F0E7; --onpc:#00201C; --ter:#9A4521; --terc:#FFDBCC; --ink:#171D1C; --mut:#3F4947; --line:#D5E0DD; --bg:#F5FAF8; }
+  *{box-sizing:border-box}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  body{font-family:'Inter','Segoe UI',Arial,sans-serif; font-size:9pt; line-height:1.4; color:var(--ink); margin:0; font-feature-settings:"tnum" 1}
+  h1,h2,h3{font-family:'Plus Jakarta Sans','Segoe UI',Arial,sans-serif; margin:0; color:var(--onpc)}
+  header{display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2.5px solid var(--pri); padding-bottom:6px; margin-bottom:8px}
+  h1{font-size:20pt; font-weight:800; letter-spacing:-.4px; line-height:1.05}
+  .sub{font-size:9.2pt; color:var(--mut); margin-top:3px}
+  .meta{text-align:right; font-size:8.2pt; color:var(--mut); line-height:1.35}
+  h2{font-size:11.6pt; font-weight:700; margin:10px 0 4px; display:flex; align-items:center; gap:7px}
+  h2 .n{background:var(--pri); color:#fff; width:18px; height:18px; border-radius:50%; font-size:8.5pt; display:inline-flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif; font-weight:700}
+  p{margin:0 0 5px}
+  ul{margin:2px 0 4px; padding-left:15px} li{margin:0 0 2px}
+  table{border-collapse:collapse; width:100%; font-size:8.2pt; margin:3px 0 6px}
+  th{background:var(--onpc); color:#fff; text-align:left; padding:3px 6px; font-weight:600}
+  td{padding:3px 6px; border-bottom:1px solid var(--line); vertical-align:top}
+  code,.mono{font-family:Consolas,'Courier New',monospace; font-size:7.9pt; background:#E9F1EF; padding:0 3px; border-radius:3px}
+  pre{font-family:Consolas,'Courier New',monospace; font-size:7.7pt; line-height:1.35; background:#EEF4F2; border:1px solid var(--line); border-radius:8px; padding:6px 9px; margin:4px 0 6px; white-space:pre-wrap}
+  .card{background:var(--pc); border-radius:10px; padding:6px 10px; font-size:8.7pt; margin:4px 0}
+  .note{border-left:3px solid var(--ter); background:var(--terc); padding:4px 8px; border-radius:0 8px 8px 0; font-size:8.4pt; margin:5px 0}
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  svg{display:block; width:100%; height:auto; margin:4px 0 2px}
+  .cap{font-size:7.8pt; color:var(--mut); text-align:center; margin-bottom:4px}
+  .pb{break-before:page}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Ortak Hesap</h1>
+    <div class="sub">Architecture and protocols &middot; Milestone 1 &middot; software design pattern, data flow and interfaces</div>
+  </div>
+  <div class="meta"><b>Team 5</b> &middot; MTM4681 Mobile Programming<br>Hakan İnce &amp; İlhan Ünal<br>Flutter &middot; Material 3 &middot; Firebase</div>
+</header>
+
+<h2><span class="n">1</span>Chosen pattern: MVVM with a Repository layer</h2>
+<p>We will build Ortak Hesap in <b>Flutter</b> and organise the code with <b>MVVM</b> (Model&ndash;View&ndash;ViewModel) plus a <b>Repository</b> layer between the ViewModels and the data sources. Flutter UIs are declarative: a widget is a function of state. MVVM fits this naturally, because the <i>View</i> only renders state exposed by a <i>ViewModel</i> and forwards user events back to it. In classic MVC the controller would have to push updates into the view, which is awkward in Flutter and tends to mix widget code with business logic. Keeping the logic in ViewModels makes it testable without a device. Alternatives such as BLoC or Redux would also work, but they add more boilerplate than a two-person project needs; we use <span class="mono">provider</span> with <span class="mono">ChangeNotifier</span>, which is simple and taught in the course.</p>
+
+<svg viewBox="0 0 1000 318" role="img" aria-label="Layered architecture diagram: View, ViewModel, Repository, Data sources and services">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0B6B63"/></marker></defs>
+  <style>
+    .bt{font:700 19px 'Plus Jakarta Sans','Segoe UI',sans-serif; fill:#00201C}
+    .bs{font:600 14.5px 'Inter','Segoe UI',sans-serif; fill:#0B6B63}
+    .bl{font:500 14.5px 'Inter','Segoe UI',sans-serif; fill:#171D1C}
+    .al{font:600 13.5px 'Inter','Segoe UI',sans-serif; fill:#3F4947}
+  </style>
+  <!-- boxes -->
+  <g>
+    <rect x="2" y="40" width="222" height="190" rx="16" fill="#B8F0E7" stroke="#0B6B63" stroke-width="2.4"/>
+    <text x="16" y="70" class="bt">View</text><text x="16" y="91" class="bs">Flutter widgets (S1&#8211;S9)</text>
+    <text x="16" y="124" class="bl">&#8226; Renders ViewModel state</text><text x="16" y="148" class="bl">&#8226; Sends user events</text><text x="16" y="172" class="bl">&#8226; No business logic</text><text x="16" y="196" class="bl">&#8226; Material 3 theme</text>
+
+    <rect x="260" y="40" width="222" height="190" rx="16" fill="#B8F0E7" stroke="#0B6B63" stroke-width="2.4"/>
+    <text x="274" y="70" class="bt">ViewModel</text><text x="274" y="91" class="bs">ChangeNotifier per feature</text>
+    <text x="274" y="124" class="bl">&#8226; Holds UI state</text><text x="274" y="148" class="bl">&#8226; Validates input (D4)</text><text x="274" y="172" class="bl">&#8226; Runs use-case logic</text><text x="274" y="196" class="bl">&#8226; Calls repositories</text>
+
+    <rect x="518" y="40" width="222" height="190" rx="16" fill="#FFFFFF" stroke="#6F7977" stroke-width="2.4"/>
+    <text x="532" y="70" class="bt">Repository</text><text x="532" y="91" class="bs">abstract Dart interfaces</text>
+    <text x="532" y="124" class="bl">&#8226; AuthRepository</text><text x="532" y="148" class="bl">&#8226; GroupRepository</text><text x="532" y="172" class="bl">&#8226; ExpenseRepository</text><text x="532" y="196" class="bl">&#8226; SettlementRepository</text>
+
+    <rect x="776" y="40" width="222" height="190" rx="16" fill="#FFFFFF" stroke="#6F7977" stroke-width="2.4"/>
+    <text x="790" y="70" class="bt">Data sources</text><text x="790" y="91" class="bs">SDK wrappers + backend</text>
+    <text x="790" y="124" class="bl">&#8226; Firebase Auth</text><text x="790" y="148" class="bl">&#8226; Cloud Firestore</text><text x="790" y="172" class="bl">&#8226; FCM, Storage</text><text x="790" y="196" class="bl">&#8226; Camera, share, links</text>
+  </g>
+  <!-- arrows -->
+  <g stroke="#0B6B63" stroke-width="3" fill="none" marker-end="url(#ar)">
+    <line x1="226" y1="105" x2="258" y2="105"/><line x1="484" y1="105" x2="516" y2="105"/><line x1="742" y1="105" x2="774" y2="105"/>
+  </g>
+  <g stroke="#6F7977" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ar)">
+    <path d="M258 190 L226 190"/><path d="M516 190 L484 190"/><path d="M774 190 L742 190"/>
+  </g>
+  <text x="2" y="26" class="al">user events &#8594;</text><text x="260" y="26" class="al">calls (async) &#8594;</text><text x="518" y="26" class="al">interface calls &#8594;</text><text x="776" y="26" class="al">SDK / network &#8594;</text>
+  <text x="2" y="252" class="al">&#8592; state: notifyListeners() (dashed arrows: results, Streams and Futures flow back)</text>
+  <!-- model band -->
+  <rect x="2" y="266" width="996" height="46" rx="12" fill="#FFDBCC" stroke="#9A4521" stroke-width="2"/>
+  <text x="18" y="285" class="bt" style="font-size:17px;fill:#3A0C00">Model</text>
+  <text x="104" y="285" class="bl" style="fill:#3A0C00">Immutable Dart classes shared by all layers: User &#183; Group &#183; Expense &#183; Share &#183; Settlement &#183; Balance</text>
+  <text x="104" y="303" class="bl" style="fill:#3A0C00;font-size:13.5px">Money is stored as integer minor units (kuru&#351;) to avoid floating-point rounding errors.</text>
+</svg>
+<div class="cap">Figure 1. Layers of Ortak Hesap. Dependencies point from left to right; the View never talks to Firebase directly.</div>
+
+<h2><span class="n">2</span>How the parts map to our screens</h2>
+<table>
+  <tr><th style="width:19%">Screens (see wireframes)</th><th style="width:21%">ViewModel</th><th style="width:30%">Model objects used</th><th>Responsibility</th></tr>
+  <tr><td>S1a, S1b Onboarding, Sign in</td><td class="mono">AuthViewModel</td><td>User</td><td>Sign in / sign up, session state (decision D1 &ldquo;signed in?&rdquo;)</td></tr>
+  <tr><td>S2, S2b My Groups</td><td class="mono">GroupsViewModel</td><td>Group, Balance</td><td>Streams the user&rsquo;s groups and balances (decision D2 &ldquo;has a group?&rdquo;)</td></tr>
+  <tr><td>S3, S4 Create / Join group</td><td class="mono">CreateGroupVM, JoinGroupVM</td><td>Group, invite code</td><td>Creates a group, builds invite link and QR, validates a code before joining</td></tr>
+  <tr><td>S5 Group detail</td><td class="mono">GroupDetailViewModel</td><td>Group, Expense, Balance</td><td>Expense list grouped by date, headline balance</td></tr>
+  <tr><td>S6, S6b Add expense</td><td class="mono">AddExpenseViewModel</td><td>Expense, Share</td><td>Form state, equal/custom split, validation (D3, D4), optional receipt photo</td></tr>
+  <tr><td>S7, S7b, S7c Balances</td><td class="mono">BalancesViewModel</td><td>Balance, Settlement</td><td>Suggested payments, &ldquo;Mark as paid&rdquo;, all-settled state (D5)</td></tr>
+  <tr><td>S8, S9 Activity, Profile</td><td class="mono">ActivityVM, ProfileVM</td><td>Activity, User</td><td>Feed of events; language, currency, theme, notifications</td></tr>
+</table>
+
+<div class="two">
+<div>
+<p><b>Planned folder structure</b> (feature-first):</p>
+<pre>lib/
+  app/       routes (go_router), theme
+  core/      money.dart, debt_solver.dart
+  data/      models/, repositories/ (interfaces
+             + Firebase impl.), sources/
+  features/  auth, groups, expenses, balances,
+             activity, profile; each feature has
+             view/ (screens, widgets) and
+             viewmodel/ (ChangeNotifier)</pre>
+</div>
+<div>
+<p><b>Why this helps the team</b></p>
+<ul>
+  <li><b>Testable:</b> ViewModels depend on repository <i>interfaces</i>, so unit tests inject in-memory fakes (no network).</li>
+  <li><b>Replaceable backend:</b> only <span class="mono">data/</span> knows about Firebase.</li>
+  <li><b>Parallel work:</b> one of us builds views from the Figma mockups while the other builds ViewModels and repositories against the agreed interfaces.</li>
+</ul>
+</div>
+</div>
+
+<div class="pb"></div>
+
+<h2 style="margin-top:0"><span class="n">3</span>Data model and storage</h2>
+<p>Data lives in <b>Cloud Firestore</b> (document database with real-time listeners and an offline cache). Each group is a document with two sub-collections, so a member&rsquo;s read access can be checked with one rule.</p>
+<table>
+  <tr><th style="width:21%">Collection</th><th style="width:44%">Main fields</th><th>Notes</th></tr>
+  <tr><td class="mono">users/{uid}</td><td>displayName, email, photoUrl, locale, currency, fcmTokens[]</td><td>Created at first sign-in</td></tr>
+  <tr><td class="mono">groups/{gid}</td><td>name, type (home | trip | other), memberIds[], inviteCode, createdBy, createdAt</td><td>Invite code is unique, 4&ndash;6 characters</td></tr>
+  <tr><td class="mono">groups/{gid}/expenses/{eid}</td><td>title, amountMinor, paidBy, splitType (equal | custom | percent), shares{uid: minor}, receiptUrl?, date</td><td>Sum of shares must equal amountMinor</td></tr>
+  <tr><td class="mono">groups/{gid}/settlements/{sid}</td><td>from, to, amountMinor, createdAt, createdBy</td><td>Written by &ldquo;Mark as paid&rdquo;</td></tr>
+  <tr><td class="mono">invites/{code}</td><td>groupId, expiresAt</td><td>Lookup for the Join screen (S4)</td></tr>
+</table>
+
+<h2><span class="n">4</span>Key flow: adding an expense (S6 &rarr; S5)</h2>
+<svg viewBox="0 0 1000 468" role="img" aria-label="Sequence diagram for adding an expense">
+  <defs>
+    <marker id="s1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#171D1C"/></marker>
+    <marker id="s2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6F7977"/></marker>
+  </defs>
+  <style>
+    .lt{font:700 16px 'Plus Jakarta Sans','Segoe UI',sans-serif; fill:#00201C}
+    .ls{font:500 12.5px 'Inter','Segoe UI',sans-serif; fill:#3F4947}
+    .ml{font:500 14.5px 'Inter','Segoe UI',sans-serif; fill:#171D1C}
+  </style>
+  <g>
+    <rect x="12" y="8" width="150" height="48" rx="10" fill="#B8F0E7" stroke="#0B6B63" stroke-width="2"/><text x="87" y="29" text-anchor="middle" class="lt">View</text><text x="87" y="46" text-anchor="middle" class="ls">AddExpenseScreen</text>
+    <rect x="182" y="8" width="150" height="48" rx="10" fill="#B8F0E7" stroke="#0B6B63" stroke-width="2"/><text x="257" y="29" text-anchor="middle" class="lt">ViewModel</text><text x="257" y="46" text-anchor="middle" class="ls">AddExpenseViewModel</text>
+    <rect x="352" y="8" width="150" height="48" rx="10" fill="#fff" stroke="#6F7977" stroke-width="2"/><text x="427" y="29" text-anchor="middle" class="lt">Repository</text><text x="427" y="46" text-anchor="middle" class="ls">ExpenseRepository</text>
+    <rect x="522" y="8" width="150" height="48" rx="10" fill="#fff" stroke="#6F7977" stroke-width="2"/><text x="597" y="29" text-anchor="middle" class="lt">Firestore</text><text x="597" y="46" text-anchor="middle" class="ls">cloud + local cache</text>
+    <rect x="692" y="8" width="150" height="48" rx="10" fill="#fff" stroke="#6F7977" stroke-width="2"/><text x="767" y="29" text-anchor="middle" class="lt">Cloud Function</text><text x="767" y="46" text-anchor="middle" class="ls">onCreate trigger</text>
+    <rect x="862" y="8" width="130" height="48" rx="10" fill="#FFDBCC" stroke="#9A4521" stroke-width="2"/><text x="927" y="29" text-anchor="middle" class="lt">Members</text><text x="927" y="46" text-anchor="middle" class="ls">FCM push</text>
+  </g>
+  <g stroke="#B7C4C1" stroke-width="1.6" stroke-dasharray="5 5">
+    <line x1="87" y1="56" x2="87" y2="456"/><line x1="257" y1="56" x2="257" y2="456"/><line x1="427" y1="56" x2="427" y2="456"/><line x1="597" y1="56" x2="597" y2="456"/><line x1="767" y1="56" x2="767" y2="456"/><line x1="927" y1="56" x2="927" y2="456"/>
+  </g>
+  <g stroke="#171D1C" stroke-width="2" fill="none" marker-end="url(#s1)">
+    <line x1="87" y1="96" x2="255" y2="96"/>
+    <path d="M257 134 L305 134 L305 152 L259 152"/>
+    <line x1="257" y1="190" x2="425" y2="190"/>
+    <line x1="427" y1="228" x2="595" y2="228"/>
+    <line x1="597" y1="344" x2="765" y2="344"/>
+    <line x1="767" y1="388" x2="925" y2="388"/>
+  </g>
+  <g stroke="#6F7977" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#s2)">
+    <line x1="595" y1="266" x2="429" y2="266"/>
+    <line x1="425" y1="304" x2="259" y2="304"/>
+    <line x1="255" y1="428" x2="89" y2="428"/>
+  </g>
+  <g>
+    <text x="96" y="88" class="ml">1 saveExpense(amount, payer, split)</text>
+    <text x="316" y="147" class="ml">2 validate: amount &gt; 0, shares sum = total</text>
+    <text x="266" y="182" class="ml">3 addExpense(Expense)</text>
+    <text x="436" y="220" class="ml">4 write expenses/{id}</text>
+    <text x="436" y="258" class="ml" style="fill:#3F4947">5 ack (local cache, then server)</text>
+    <text x="268" y="296" class="ml" style="fill:#3F4947">6 Future completes</text>
+    <text x="606" y="336" class="ml">7 trigger on new document</text>
+    <text x="922" y="380" text-anchor="end" class="ml">8 push: &ldquo;Ayşe added Pizza night&rdquo;</text>
+    <text x="96" y="420" class="ml" style="fill:#3F4947">9 notifyListeners(): list refreshed</text>
+  </g>
+</svg>
+<div class="cap">Figure 2. Sequence for &ldquo;Save expense&rdquo;. The screen updates from the local cache immediately (offline-first); the push to other members happens afterwards.</div>
+
+<h2><span class="n">5</span>Algorithms in the Model layer</h2>
+<div class="two">
+<div>
+<p><b>Money and equal split.</b> Amounts are integers in kuru&scedil; (&#8378;86,90 = 8690). For <i>n</i> people, each share is <span class="mono">floor(total / n)</span> and the <span class="mono">total mod n</span> remaining kuru&scedil; go one by one to the first members. Example: 8690 / 4 &rarr; 2173, 2173, 2172, 2172, which always sums to the total (this matches the numbers in the mockups).</p>
+<p><b>Balance of a member</b> = what they paid &minus; their shares + settlements received &minus; settlements paid. Balances sum to zero within a group.</p>
+</div>
+<div>
+<p><b>Simplifying debts</b> (greedy, at most <i>n</i>&minus;1 payments):</p>
+<pre>creditors = members with balance &gt; 0
+debtors   = members with balance &lt; 0
+while both lists are not empty:
+    c = creditor with the largest balance
+    d = debtor with the largest |balance|
+    pay = min(c.balance, |d.balance|)
+    emit "d pays c: pay"
+    c.balance -= pay;  d.balance += pay</pre>
+<p style="margin:0">Flat 4B: You +120, Ayşe &minus;80, Mert &minus;40, Can 0 gives two payments (Ayşe&rarr;You 80, Mert&rarr;You 40), as shown on screen S7.</p>
+</div>
+</div>
+
+<div class="pb"></div>
+
+<h2 style="margin-top:0"><span class="n">6</span>Protocols and interfaces</h2>
+<table>
+  <tr><th style="width:20%">Protocol / interface</th><th style="width:36%">Purpose in Ortak Hesap</th><th style="width:12%">Screens</th><th>Package / platform API</th></tr>
+  <tr><td><b>HTTPS (TLS 1.2+)</b></td><td>Encrypts all traffic between the app and Firebase; no plain HTTP is used.</td><td>all</td><td>Firebase SDKs, Android network security config</td></tr>
+  <tr><td><b>OAuth 2.0 / OpenID Connect</b> and e-mail + password</td><td>Sign in with Google or e-mail. The backend returns a signed ID token (JWT) that proves who the user is.</td><td>S1b</td><td><span class="mono">firebase_auth</span>, <span class="mono">google_sign_in</span></td></tr>
+  <tr><td><b>Cloud Firestore protocol</b> (real-time listeners over a persistent connection)</td><td>Stores groups, expenses and settlements; streams changes so every member sees updates instantly; offline cache lets users add expenses without network.</td><td>S2, S5, S7, S8</td><td><span class="mono">cloud_firestore</span></td></tr>
+  <tr><td><b>Firebase Cloud Messaging</b> (HTTP v1 API, Android push)</td><td>Sends push notifications: &ldquo;Ayşe added Pizza night&rdquo;, &ldquo;Mert paid you back&rdquo;. Needs the runtime notification permission on Android 13+.</td><td>S8, S9</td><td><span class="mono">firebase_messaging</span>, Cloud Functions</td></tr>
+  <tr><td><b>Deep links</b> (Android App Links, HTTPS URL <span class="mono">ortakhesap.app/join/K7P2</span>)</td><td>Opens the app straight to the Join screen from a shared invite link and pre-fills the code.</td><td>S4</td><td><span class="mono">app_links</span>, <span class="mono">go_router</span></td></tr>
+  <tr><td><b>Camera + QR decoding</b> (runtime permission)</td><td>Scans a group QR code and takes a receipt photo; if permission is denied, the user can still type the code or save without a photo.</td><td>S4, S6</td><td><span class="mono">mobile_scanner</span>, <span class="mono">image_picker</span></td></tr>
+  <tr><td><b>Share sheet</b> (Android <span class="mono">ACTION_SEND</span> intent)</td><td>Lets the user send the invite link through any messaging app.</td><td>S3</td><td><span class="mono">share_plus</span></td></tr>
+  <tr><td><b>Cloud Storage for Firebase</b> (HTTPS, access-controlled URLs)</td><td>Holds receipt photos; only group members can read them.</td><td>S5, S6</td><td><span class="mono">firebase_storage</span></td></tr>
+  <tr><td><b>JSON documents / Dart converters</b></td><td>Every Model class has <span class="mono">toMap()</span> and <span class="mono">fromMap()</span> to convert to and from Firestore documents.</td><td>data layer</td><td>plain Dart</td></tr>
+  <tr><td><b>Locale data (CLDR via intl)</b></td><td>Turkish and English formatting of amounts and dates (&#8378;1.250,50, 12 Nov 2026).</td><td>all</td><td><span class="mono">intl</span>, Flutter localisations</td></tr>
+  <tr><td><b>Dart interfaces</b> (abstract classes)</td><td>The contract between ViewModels and data: <span class="mono">ExpenseRepository</span> has <span class="mono">watchExpenses(gid)</span>, <span class="mono">addExpense(e)</span>, <span class="mono">deleteExpense(id)</span>. The Firebase class implements it; tests use a fake.</td><td>S2&ndash;S9</td><td>plain Dart + <span class="mono">provider</span></td></tr>
+</table>
+
+<h2><span class="n">7</span>Security, offline behaviour and testing</h2>
+<ul>
+  <li><b>Authorisation:</b> Firestore Security Rules allow a user to read or write <span class="mono">groups/{gid}</span> and its sub-collections only if their uid is in <span class="mono">memberIds</span>; expenses must pass a server-side check that shares sum to the amount.</li>
+  <li><b>Privacy:</b> only the minimum personal data is stored (name, e-mail); receipt images are private; sign-out removes the local cache and the FCM token.</li>
+  <li><b>Offline-first:</b> writes go to the local Firestore cache first and sync later; the UI shows a &ldquo;Waiting to sync&rdquo; chip (see the user flow edge cases).</li>
+  <li><b>Testing:</b> unit tests for money rounding and the debt solver (with property tests: balances sum to zero, at most <i>n</i>&minus;1 payments), ViewModel tests with fake repositories, and widget tests for S5, S6 and S7.</li>
+</ul>
+<div class="note"><b>Known limitation.</b> Server-side push needs a Cloud Function, which requires Firebase&rsquo;s pay-as-you-go plan. If we stay on the free plan for the course, the app will fall back to Firestore listeners and local notifications while it is open, and push will be demonstrated with a test message from the Firebase console.</div>
+
+<h2><span class="n">8</span>Implementation order (after this milestone)</h2>
+<ol style="margin:2px 0 0; padding-left:17px">
+  <li>Project setup, theme from the design tokens (<span class="mono">ColorScheme.fromSeed(#0B6B63)</span>, Plus Jakarta Sans + Inter) and routes for S1&ndash;S9.</li>
+  <li>Model classes, <span class="mono">money.dart</span>, <span class="mono">debt_solver.dart</span> with unit tests (pure Dart, no Firebase).</li>
+  <li>Repository interfaces with in-memory fakes, then screens S2, S5, S6, S7 running on the fakes.</li>
+  <li>Firebase Auth and Firestore implementations, invite links and QR, then push notifications.</li>
+</ol>
+
+</body>
+</html>
