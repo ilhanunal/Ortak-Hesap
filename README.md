@@ -24,9 +24,12 @@ Ortak Hesap is built with **Flutter** and follows **Material 3**. Students creat
 
 | Deliverable | Link | View access for instructor |
 |---|---|---|
-| Wireframes | _coming in Part 2_ | - |
-| Mockups | _coming in Part 2_ | - |
-| Prototype | _coming in Part 3_ | - |
+| Wireframes (14 screens, clickable) | [Figma - Ortak Hesap Wireframes](https://www.figma.com/design/7qLkitp03UVHnm8bihpD8y) | Anyone with the link can view |
+| Mockups (14 screens, Material 3) | [Figma - Ortak Hesap Mockups and Prototype, page "Mockups"](https://www.figma.com/design/Lp0KlXl0ggJ9jWSF42ItWa) | Anyone with the link can view |
+| Prototype (clickable flow) | [Figma - same file, page "Prototype"](https://www.figma.com/design/Lp0KlXl0ggJ9jWSF42ItWa?node-id=3-239) | Anyone with the link can view |
+
+How to try the prototype: open the Prototype page, press **Present** (play button) and choose the flow **"Main flow (start at onboarding)"**. Transitions used: push (forward / back), move-in from the bottom (FAB and custom split sheet) and dissolve (tabs and dialogs).
+
 
 ## Deliverables and status
 
